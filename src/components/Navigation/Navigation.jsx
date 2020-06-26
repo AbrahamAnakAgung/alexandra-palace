@@ -1,20 +1,23 @@
 import * as React from "react";
 import styled from "styled-components";
 import { Button } from "../Button/Button";
-import { COLORS, TEXT_SIZE } from "../../constants";
+import { COLORS, TEXT_SIZE, FONT_WEIGHT } from "../../constants";
 import { StyledLink } from "../StyledLink/StyledLink";
 import { Spacer } from "../Spacer/Spacer";
 import { ButtonLink } from "../ButtonLink/ButtonLink";
 import { SocialBar } from "../SocialBar/SocialBar";
 
 function Navigation() {
+  const [toggleMenu, setToggleMenu] = React.useState(false);
+  const handleClick = () => setToggleMenu((prevState) => !prevState);
+
   return (
     <NavWrapper>
       <NavBar>
         <NavLogoGroup>
           <NavHamburger>
-            <Button width={"5rem"}>
-              <HamburgerLine></HamburgerLine>
+            <Button width={"5rem"} onClick={handleClick}>
+              <HamburgerLine className={toggleMenu && "close"}></HamburgerLine>
             </Button>
           </NavHamburger>
           <NavLogoWrapper>
@@ -35,7 +38,8 @@ function Navigation() {
           </ButtonLink>
         </NavBookGroup>
       </NavBar>
-      <NavMenuGroup>
+
+      <NavMenuGroup className={toggleMenu ? "show" : "hidden"}>
         <NavMenuWrapper>
           <NavListsWrapper>
             <NavListGroup>
@@ -62,15 +66,27 @@ function Navigation() {
           <NavListsWrapper>
             <NavListGroup>
               <NavList textSize={"small"}>
-                <StyledLink to='/offers'>offers</StyledLink>
+                <StyledLink to='/offers'>
+                  <Text family='arial' weight='semiBold'>
+                    offers
+                  </Text>
+                </StyledLink>
                 <Spacer size={"1rem"} />
               </NavList>
               <NavList textSize={"small"}>
-                <StyledLink to='/careers'>careers</StyledLink>
+                <StyledLink to='/careers'>
+                  <Text family='arial' weight='semiBold'>
+                    careers
+                  </Text>
+                </StyledLink>
                 <Spacer size={"1rem"} />
               </NavList>
               <NavList textSize={"small"}>
-                <StyledLink to='/contact'>contact us</StyledLink>
+                <StyledLink to='/contact'>
+                  <Text family='arial' weight='semiBold'>
+                    contact us
+                  </Text>
+                </StyledLink>
                 <Spacer size={"1rem"} />
               </NavList>
             </NavListGroup>
@@ -96,7 +112,7 @@ function Navigation() {
                         c0.3-0.1,0.6-0.1,0.9-0.1c1.7,0,3.1,1.4,3,3.1C14,10.9,14,11,14,11.1z'></path>
               </svg>
             </SVGWrapper>
-            <Text fontSize={TEXT_SIZE.normalSmall} family='arial'>
+            <Text textSize={"normalSmall"} family='arial'>
               123.456.7890
             </Text>
           </NavContact>
@@ -111,7 +127,8 @@ function Navigation() {
 const Text = styled.span`
   font-family: ${(props) =>
     props.family === "arial" ? "Arial, sans-serif" : '"EB Garamond", serif;'};
-  font-size: ${(props) => props.fontSize};
+  font-size: ${(props) => TEXT_SIZE[props.textSize] || "inherit"};
+  font-weight: ${(props) => FONT_WEIGHT[props.weight] || 400};
 `;
 
 const SVGWrapper = styled.span`
@@ -156,9 +173,24 @@ const NavMenuGroup = styled.div`
   z-index: 990;
   top: 0;
   left: 0;
-  border: 1px solid crimson;
-  background: powderblue;
+  background: url("/assets/images/eggshell1.jpg") repeat;
   height: calc(100vh - 2rem);
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 500ms, opacity 300ms;
+
+  &::before {
+    content: "";
+    position: absolute;
+    border: 1px solid crimson;
+    width: 100%;
+    height: 1rem;
+  }
+
+  &.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
 `;
 
 const BookText = styled.span`
@@ -173,17 +205,28 @@ const ImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: ${COLORS.whitePrimary};
 `;
 
 const NavLogoWrapper = styled.div`
   width: 100%;
   height: 100%;
+
+  @media (min-width: 768px) {
+    width: auto;
+  }
 `;
 
 const HamburgerLine = styled.span`
   width: 60%;
   height: 1px;
   background: ${COLORS.whitePure};
+  opacity: 1;
+  transition: background 500ms;
+
+  &.close {
+    background: 0 0;
+  }
 
   &::before,
   &::after {
@@ -193,6 +236,7 @@ const HamburgerLine = styled.span`
     width: 100%;
     height: 1px;
     background: ${COLORS.whitePure};
+    transition: top 300ms, transform 300ms ease-out;
   }
 
   &::before {
@@ -202,12 +246,19 @@ const HamburgerLine = styled.span`
   &::after {
     top: 1rem;
   }
+
+  &.close::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  &.close::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
 `;
 
-const NavHamburger = styled.div`
-  height: 4.6rem;
-  width: 4.6rem;
-`;
+const NavHamburger = styled.div``;
 
 const NavLogoGroup = styled.div`
   display: flex;
