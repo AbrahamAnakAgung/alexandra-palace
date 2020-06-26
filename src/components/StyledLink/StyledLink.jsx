@@ -15,6 +15,7 @@ const CustomLink = styled(Link)`
   width: ${(props) => (props.width ? props.width : "100%")};
   height: 100%;
   color: ${COLORS.grayPrimary};
+  font-weight: 600;
 `;
 
 export { StyledLink };
