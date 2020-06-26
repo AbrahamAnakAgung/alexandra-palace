@@ -13,7 +13,11 @@ function SocialBar() {
   return (
     <Wrapper>
       {socialMedia.map((socmed) => (
-        <a href={socmed.href} target='_blank' rel='noopener noreferrer'>
+        <a
+          href={socmed.href}
+          target='_blank'
+          rel='noopener noreferrer'
+          key={socmed.text}>
           {socmed.text}
         </a>
       ))}
