@@ -169,22 +169,33 @@ const NavMenuWrapper = styled.div`
 `;
 
 const NavMenuGroup = styled.div`
-  display: fixed;
+  position: fixed;
+  width: 100%;
   z-index: 990;
-  top: 0;
+  top: 1rem;
   left: 0;
   background: url("/assets/images/eggshell1.jpg") repeat;
   height: calc(100vh - 2rem);
-  transform: translateY(-100%);
+  transform: translateY(-105%);
   opacity: 0;
   transition: transform 500ms, opacity 300ms;
 
-  &::before {
+  &::before,
+  &::after {
     content: "";
     position: absolute;
-    border: 1px solid crimson;
-    width: 100%;
-    height: 1rem;
+    width: 1rem;
+    height: 100%;
+    background: white;
+    top: 0;
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
   }
 
   &.show {
